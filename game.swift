@@ -7,6 +7,12 @@
 
 import Foundation
 
+class Game  {
+    var player = [Player]()
+    var allNaChar = [String]()
+    var nbrP = 0
+    
+}
 
 class Player {
     var playerName = ""
@@ -29,19 +35,19 @@ class Character {
         self.TypeClass = TypeClass
     }
     func displayName() {
-        print(self.name)
+        print(self.name + " ", terminator:"")
     }
 
     func displayLifePoint() {
-        print(self.lifePoint)
+        print("[Life point: \(self.lifePoint) | " , terminator:"")
     }
 
     func displayAttack() {
-        print(self.attack)
+        print("Dammage points: \(self.attack) | " , terminator:"")
     }
 
     func displayTypeClass() {
-        print(self.TypeClass)
+        print("Class: (" + self.TypeClass + ")]")
     }
 }
 
@@ -56,13 +62,17 @@ class Warrior: Character {
 }
 
 class Mage: Character {
-    var heal = 15;
+    var heal = 15
     
     override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
         super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
     }
     convenience init(name: String) {
         self.init(name: name, lifePoint: 33, attack: 0, TypeClass: "mage")
+    }
+    
+    func displayHeal() {
+        print("Healing points: \(self.heal) | " , terminator:"")
     }
 }
 
@@ -95,9 +105,8 @@ class Paladin: Character {
     convenience init(name: String) {
         self.init(name: name, lifePoint: 100, attack: 7, TypeClass: "paladin")
     }
-    func lol()
-    {
-        print("lol")
+    func displayHeal() {
+        print("Healing points: \(self.heal) | " , terminator:"")
     }
     
 }
@@ -123,7 +132,7 @@ func charName(allNaChar: [String]) -> String {
     return n
 }
 
-func creatChar(player: Player, allNaChar: inout [String]) {
+func creatChar(game: Game) {
 
     var i = 0
     while(i < 3) {
@@ -137,63 +146,82 @@ func creatChar(player: Player, allNaChar: inout [String]) {
         
         switch choice {
         case "1":
-            player.heroes.append(Warrior(name:(charName(allNaChar: allNaChar))))
-            allNaChar.append(player.heroes[i].name)
+            game.player[game.nbrP].heroes.append(Warrior(name:(charName(allNaChar: game.allNaChar))))
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
             i += 1
         case "2":
-            player.heroes.append(Mage(name:(charName(allNaChar: allNaChar))))
-            allNaChar.append(player.heroes[i].name)
+            game.player[game.nbrP].heroes.append(Mage(name:(charName(allNaChar: game.allNaChar))))
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
             i += 1
         case "3":
-            player.heroes.append(Coloss(name:(charName(allNaChar: allNaChar))))
-            allNaChar.append(player.heroes[i].name)
-                i += 1
+            game.player[game.nbrP].heroes.append(Coloss(name:(charName(allNaChar: game.allNaChar))))
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            i += 1
         case "4":
-            player.heroes.append(Dwarf(name:(charName(allNaChar: allNaChar))))
-            allNaChar.append(player.heroes[i].name)
+            game.player[game.nbrP].heroes.append(Dwarf(name:(charName(allNaChar: game.allNaChar))))
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
             i += 1
         case "5":
-            player.heroes.append(Paladin(name:(charName(allNaChar: allNaChar))))
-            allNaChar.append(player.heroes[i].name)
+            game.player[game.nbrP].heroes.append(Paladin(name:(charName(allNaChar: game.allNaChar))))
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
             i += 1
         default:
-            print("I don't understand..")
+            print("I don't understand.. make a choice between 1 and 5")
             }
         }
     }
 }
 
-/*func    fight(_ player: [Player()]) {
+func    displayChar(game: Game) {
     print("GAME begins in 3 seconds")
     sleep(1)
     for i in 0..<3 {
         print(i + 1)
         sleep(1)
     }
-    for i in player {
-        print(player[i].playerName)
-        for _ in player[i] {
-            print(player[i].displayName)
-            print(player[i].displayLifePoint)
-            print(player[i].displayAttack)
-            print(player[i].displayTypeClass)
+    var i = 0
+    while (i < 2) {
+        print(game.player[i].playerName)
+        var b = 0
+        while (b < 3) {
+            if (game.player[i].heroes[b].TypeClass == "mage") {
+                game.player[i].heroes[b].displayName()
+                game.player[i].heroes[b].displayLifePoint()
+                (game.player[i].heroes[b] as! Mage).displayHeal()
+                game.player[i].heroes[b].displayTypeClass()
+                b += 1
+            } else if (game.player[i].heroes[b].TypeClass == "paladin") {
+                game.player[i].heroes[b].displayName()
+                game.player[i].heroes[b].displayLifePoint()
+                (game.player[i].heroes[b] as! Paladin).displayHeal()
+                game.player[i].heroes[b].displayAttack()
+                game.player[i].heroes[b].displayTypeClass()
+                b += 1
+            } else {
+                game.player[i].heroes[b].displayName()
+                game.player[i].heroes[b].displayLifePoint()
+                game.player[i].heroes[b].displayAttack()
+                game.player[i].heroes[b].displayTypeClass()
+                b += 1
+            }
         }
+        i += 1
     }
-}*/
+}
 
 func    menu() {
     
-    var player =  [Player]()
-    var allNaChar = [String]()
+    let game =  Game()
     for i in 0..<2 {
-        player.append(Player())
+        game.player.append(Player())
         print("Player\(i + 1) what's your name ?")
         if let name = readLine() {
-        player[i].playerName = name
+        game.nbrP = i
+        game.player[i].playerName = name
         }
-        creatChar(player: player[i], allNaChar: &allNaChar)
+        creatChar(game: game)
     }
-   // fight(player: player)
+ displayChar(game: game)
 }
 
 menu()
