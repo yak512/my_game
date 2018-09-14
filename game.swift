@@ -12,6 +12,7 @@ class Game  {
     var allNaChar = [String]()
     var playerN = [String]()
     var nbrP = 0
+    var nbrR = 0
     var gameOver = false
     var pOneorTwo = 0
     
@@ -28,9 +29,11 @@ class Game  {
                 if (i == 0) {
                  print("[" + self.player[0].playerName + "]" + ", all of your characters are dead..")
                  print("[" + self.player[1].playerName + "]" + " Win this game congratulations !")
+                print("Number of round played: \(self.nbrR)")
                 } else {
                     print("[" + self.player[1].playerName + "]" + ", all of your characters are dead..")
                     print("[" + self.player[0].playerName + "]" + " Win this game congratulations !\n\n\n")
+                    print("Number of round played: \(self.nbrR)")
                 }
                 self.gameOver = true
             }
@@ -97,7 +100,8 @@ class Game  {
      }
     
     func    chest(character: Character) {
-       let randomnbr =  Int(arc4random_uniform(2))
+        let randomnbr =  Int(arc4random_uniform(10))
+        
         if (character.weapon == false) {
             if (randomnbr == 1) {
                 switch character.TypeClass {
@@ -182,7 +186,7 @@ class Character {
     
     func attackChar(character: Character) {
         character.lifePoint = character.lifePoint - self.attack
-        print("\n\n\n--->" + self.name + " attacked with \(self.attack) points, " + character.name + " lost \(self.attack)  life points!<---\n")
+        print("\n\n\n--->" + self.name + " attacked with \(self.attack) points, " + character.name + " lost \(self.attack) life points!<---\n")
         if (character.lifePoint <= 0) {
             character.lifePoint = 0
             character.IsAlive = false
@@ -196,7 +200,7 @@ class Warrior: Character {
         super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, attack: 10, TypeClass: "warrior", maxLife: 100)
+        self.init(name: name, lifePoint: 1, attack: 10, TypeClass: "warrior", maxLife: 100)
     }
     
 }
@@ -469,6 +473,7 @@ func fight(game: Game) {
     while (game.gameOver != true) {
         game.displayChar()
         print("[\(game.player[game.pOneorTwo].playerName)]" + " which character do you choose ?")
+        game.nbrR += 1
         if let choice = readLine() {
             switch choice {
             case game.player[game.pOneorTwo].heroes[0].name:
