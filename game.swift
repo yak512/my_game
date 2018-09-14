@@ -10,8 +10,130 @@ import Foundation
 class Game  {
     var player = [Player]()
     var allNaChar = [String]()
+    var playerN = [String]()
     var nbrP = 0
+    var gameOver = false
+    var pOneorTwo = 0
     
+    func IsGameover() {
+
+        for i in 0..<2 {
+            var a = 0
+            var lifeheroes = 0
+            while (a < 3) {
+             lifeheroes += self.player[i].heroes[a].lifePoint
+             a += 1
+            }
+            if (lifeheroes == 0) {
+                if (i == 0) {
+                 print("[" + self.player[0].playerName + "]" + ", all of your characters are dead..")
+                 print("[" + self.player[1].playerName + "]" + " Win this game congratulations !")
+                } else {
+                    print("[" + self.player[1].playerName + "]" + ", all of your characters are dead..")
+                    print("[" + self.player[0].playerName + "]" + " Win this game congratulations !\n\n\n")
+                }
+                self.gameOver = true
+            }
+        }
+        if (self.gameOver == true) {
+            var a = false
+            while (a != true) {
+                print("Do you want to play again ? yes or no")
+                if let playagain = readLine() {
+                    switch playagain {
+                        case "yes", "y":
+                            menu()
+                        case "no", "n":
+                            a = true
+                            print("Thank you for playing, see you soon ! :D")
+                        default:
+                            print("Invalid answer, please answer yes or no")
+                    }
+                }
+            }
+        }
+    }
+    
+    func whoplay() {
+        if (self.pOneorTwo == 0) {
+            self.pOneorTwo = 1
+        } else {
+            self.pOneorTwo = 0
+        }
+    }
+    
+    func    displayChar() {
+        var i = 0
+        while (i < 2) {
+            print("[\(self.player[i].playerName)]\n")
+            var b = 0
+            while (b < 3) {
+                if (self.player[i].heroes[b].TypeClass == "mage" || self.player[i].heroes[b].TypeClass == "paladin") {
+                    self.player[i].heroes[b].displayName()
+                    self.player[i].heroes[b].displayLifePoint()
+                    self.player[i].heroes[b].displaymaxLife()
+                    if (self.player[i].heroes[b].TypeClass == "mage") {
+                        (self.player[i].heroes[b] as! Mage).displayHeal()
+                    } else {
+                        self.player[i].heroes[b].displayAttack()
+                        (self.player[i].heroes[b] as! Paladin).displayHeal()
+                        }
+                    self.player[i].heroes[b].displayTypeClass()
+                    
+                    b += 1
+                }  else {
+                        self.player[i].heroes[b].displayName()
+                        self.player[i].heroes[b].displayLifePoint()
+                        self.player[i].heroes[b].displaymaxLife()
+                        self.player[i].heroes[b].displayAttack()
+                        self.player[i].heroes[b].displayTypeClass()
+                        b += 1
+     
+                    }
+                }
+            print("\n")
+            i += 1
+        }
+     }
+    
+    func    chest(character: Character) {
+       let randomnbr =  Int(arc4random_uniform(2))
+        if (character.weapon == false) {
+            if (randomnbr == 1) {
+                switch character.TypeClass {
+                    case "warrior":
+                        character.attack = character.attack + 20
+                        character.weapon = true
+                        print("\n--->" + character.name + " found a chest with a beautiful sword in it his damages are increased +20 points !<---\n")
+                    case "mage":
+                        (character as! Mage).heal = (character as! Mage).heal + 15
+                        character.weapon = true
+                        print("\n--->" + character.name + " found a chest with a beautiful stick in it, his healing spell increased +15 points !<---\n")
+                    case "coloss":
+                        character.attack = character.attack + 10
+                        character.weapon = true
+                        print("\n--->" + character.name + " found a chest with a beautiful axe in it, his damages are increased +10 points!<---\n")
+                    case "dwarf":
+                        character.attack = character.attack + 10
+                        character.weapon = true
+                        print("\n--->" + character.name + " found a chest with a beautiful sword in it, his damages are increased +10 ponts !<---\n")
+                    case "paladin":
+                        let nb = Int(arc4random_uniform(2))
+                        if (nb == 1) {
+                            (character as! Paladin).heal = (character as! Paladin).heal + 15
+                            print("\n--->" + character.name + " found a chest with a beautiful shield in it his healing spell increased +15 points !<---\n")
+                            character.weapon = true
+                        } else {
+                            character.attack = character.attack + 15
+                            print("\n-->" + character.name + " found a chest with a beautiful sword in it his damages are increased +15 points !<---\n")
+                            character.weapon = true
+                        }
+                default:
+                    print("Wrong class")
+                    }
+                }
+            }
+        }
 }
 
 class Player {
@@ -23,25 +145,33 @@ class Player {
 class Character {
     
     var name: String
+    var canAttack = false
     var attack: Int
+    var IsAlive = true
     var lifePoint: Int
     var TypeClass: String
     var weapon = false
+    var maxLife: Int
     
-    init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
+    init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
         self.name = name
         self.lifePoint = lifePoint
         self.attack = attack
         self.TypeClass = TypeClass
+        self.maxLife = maxLife
     }
     func displayName() {
         print(self.name + " ", terminator:"")
     }
 
     func displayLifePoint() {
-        print("[Life point: \(self.lifePoint) | " , terminator:"")
+        print("[Life point: \(self.lifePoint)" , terminator:"")
     }
 
+    func displaymaxLife() {
+        print("/\(self.maxLife) | " , terminator:"")
+    }
+    
     func displayAttack() {
         print("Dammage points: \(self.attack) | " , terminator:"")
     }
@@ -49,73 +179,116 @@ class Character {
     func displayTypeClass() {
         print("Class: (" + self.TypeClass + ")]")
     }
+    
+    func attackChar(character: Character) {
+        character.lifePoint = character.lifePoint - self.attack
+        print("\n\n\n--->" + self.name + " attacked with \(self.attack) points, " + character.name + " lost \(self.attack)  life points!<---\n")
+        if (character.lifePoint <= 0) {
+            character.lifePoint = 0
+            character.IsAlive = false
+            print("--->" + character.name + " is dead..<--\n")
+        }
+    }
 }
 
 class Warrior: Character {
-    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
-        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
+    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
+        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 33, attack: 42, TypeClass: "warrior")
+        self.init(name: name, lifePoint: 1, attack: 10, TypeClass: "warrior", maxLife: 100)
     }
     
 }
 
 class Mage: Character {
-    var heal = 15
+    var heal = 20
     
-    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
-        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
+    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
+        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 33, attack: 0, TypeClass: "mage")
+        self.init(name: name, lifePoint: 70, attack: 0, TypeClass: "mage", maxLife: 70)
     }
     
     func displayHeal() {
         print("Healing points: \(self.heal) | " , terminator:"")
     }
+    func healChar(character: Character) {
+        if (character.lifePoint != character.maxLife) {
+            character.lifePoint = character.lifePoint + self.heal
+            print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            if (character.lifePoint > character.maxLife) {
+                character.lifePoint = character.maxLife
+            }
+        }
+    }
 }
 
 class Coloss: Character {
-    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
-        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
+    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
+        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 150, attack: 6, TypeClass: "coloss")
+        self.init(name: name, lifePoint: 150, attack: 7, TypeClass: "coloss", maxLife: 150)
     }
     
 }
 
 class Dwarf: Character {
-    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
-        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
+    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
+        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 75, attack: 20, TypeClass: "dwarf")
+        self.init(name: name, lifePoint: 75, attack: 15, TypeClass: "dwarf", maxLife: 75)
     }
     
 }
 
 class Paladin: Character {
     
-    var heal = 10
-    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String) {
-        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass)
+    var heal = 15
+    override init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
+        super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, attack: 7, TypeClass: "paladin")
+        self.init(name: name, lifePoint: 100, attack: 7, TypeClass: "paladin", maxLife: 100)
     }
     func displayHeal() {
         print("Healing points: \(self.heal) | " , terminator:"")
     }
+    func healChar(character: Character) {
+        if (character.lifePoint != character.maxLife) {
+            character.lifePoint = character.lifePoint + self.heal
+            print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            if (character.lifePoint > character.maxLife) {
+                character.lifePoint = character.maxLife
+            }
+        }
+    }
     
+}
+
+func containsOnlyLetters(input: String) -> Bool {
+    for chr in input {
+        if (!(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z")) {
+            return false
+        } else if (input == "") {
+            return false
+        }
+    }
+    return true
 }
 
 func checkName(name: String, allNaChar: [String]) -> Bool {
         if allNaChar.contains(name) {
-            print("name already used")
+            print("This name already used ! Choose another one.")
             return false
         }
+        else if(containsOnlyLetters(input: name) == false ) {
+            print("Invalide characters ! Use characters a-z or A-Z")
+            return false
+            }
     return true
 }
 
@@ -125,7 +298,7 @@ func charName(allNaChar: [String]) -> String {
     print("Choose a name for your character")
         while (a != true ) {
             if let name = readLine() {
-                a = checkName(name: name, allNaChar: allNaChar)
+                a = checkName(name: (name.lowercased()), allNaChar: allNaChar)
                 n = name
         }
     }
@@ -147,65 +320,183 @@ func creatChar(game: Game) {
         switch choice {
         case "1":
             game.player[game.nbrP].heroes.append(Warrior(name:(charName(allNaChar: game.allNaChar))))
-            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         case "2":
             game.player[game.nbrP].heroes.append(Mage(name:(charName(allNaChar: game.allNaChar))))
-            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         case "3":
             game.player[game.nbrP].heroes.append(Coloss(name:(charName(allNaChar: game.allNaChar))))
-            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         case "4":
             game.player[game.nbrP].heroes.append(Dwarf(name:(charName(allNaChar: game.allNaChar))))
-            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         case "5":
             game.player[game.nbrP].heroes.append(Paladin(name:(charName(allNaChar: game.allNaChar))))
-            game.allNaChar.append(game.player[game.nbrP].heroes[i].name)
+            game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         default:
-            print("I don't understand.. make a choice between 1 and 5")
+            print("\n\n\n--->I don't understand.. make a choice between 1 and 5<---\n")
             }
         }
     }
 }
 
-func    displayChar(game: Game) {
-    print("GAME begins in 3 seconds")
+func attack(game: Game, character: Character) {
+    game.whoplay()
+    print("which ennemi character do u want to attack ?")
+    character.canAttack = false
+    while (character.canAttack != true) {
+    if let choice = readLine() {
+        switch choice {
+        case game.player[game.pOneorTwo].heroes[0].name:
+            if (game.player[game.pOneorTwo].heroes[0].IsAlive == false) {
+            print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+            } else {
+                character.attackChar(character: game.player[game.pOneorTwo].heroes[0])
+                character.canAttack = true
+            }
+        case game.player[game.pOneorTwo].heroes[1].name:
+            if (game.player[game.pOneorTwo].heroes[1].IsAlive == false) {
+               print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+            } else {
+                character.attackChar(character: game.player[game.pOneorTwo].heroes[1])
+                character.canAttack = true
+            }
+        case game.player[game.pOneorTwo].heroes[2].name:
+            if (game.player[game.pOneorTwo].heroes[2].IsAlive == false) {
+            print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+        } else {
+            character.attackChar(character: game.player[game.pOneorTwo].heroes[2])
+            character.canAttack = true
+            }
+        default:
+            print("--->Choose a valid ennemi to attack !<---")
+            }
+        }
+    }
+}
+
+func heal(game: Game, character: Character) -> String {
+    if (game.player[game.pOneorTwo].heroes[0].lifePoint == game.player[game.pOneorTwo].heroes[0].maxLife && game.player[game.pOneorTwo].heroes[1].lifePoint == game.player[game.pOneorTwo].heroes[1].maxLife) && game.player[game.pOneorTwo].heroes[2].lifePoint == game.player[game.pOneorTwo].heroes[2].maxLife {
+        return ("\n\n\n--->All the characters are full life! You can't select a healer !<---\n")
+    }
+    print("What character do you want to heal ?")
+    if let choice = readLine() {
+        switch choice {
+            case game.player[game.pOneorTwo].heroes[0].name:
+                if (game.player[game.pOneorTwo].heroes[0].lifePoint < game.player[game.pOneorTwo].heroes[0].maxLife && game.player[game.pOneorTwo].heroes[0].IsAlive == false) {
+                    return ("\n\n\n--->What are you trying to do do ?! You can't heal a dead character !<---\n")
+                } else if (game.player[game.pOneorTwo].heroes[0].lifePoint == game.player[game.pOneorTwo].heroes[0].maxLife) {
+                    return ("\n\n\n--->This character is full life !<---\n")
+                } else if (character.TypeClass == "mage") {
+                    (character as! Mage).healChar(character: game.player[game.pOneorTwo].heroes[0])
+                } else {
+                       (character as! Paladin).healChar(character: game.player[game.pOneorTwo].heroes[0])
+                }
+            case game.player[game.pOneorTwo].heroes[1].name:
+                if (game.player[game.pOneorTwo].heroes[1].lifePoint < game.player[game.pOneorTwo].heroes[1].maxLife && game.player[game.pOneorTwo].heroes[1].IsAlive == false) {
+                    return ("\n\n\n--->What are you trying to do do ?! You can't heal a dead character !<---\n")
+                } else if (game.player[game.pOneorTwo].heroes[1].lifePoint == game.player[game.pOneorTwo].heroes[1].maxLife) {
+                    return ("\n\n\n--->This character is full life !<---\n")
+                    } else if (character.TypeClass == "mage") {
+                    (character as! Mage).healChar(character: game.player[game.pOneorTwo].heroes[1])
+                    }
+                    else {
+                        (character as! Paladin).healChar(character: game.player[game.pOneorTwo].heroes[1])
+                    }
+            case game.player[game.pOneorTwo].heroes[2].name:
+                if (game.player[game.pOneorTwo].heroes[2].lifePoint < game.player[game.pOneorTwo].heroes[2].maxLife && game.player[game.pOneorTwo].heroes[2].IsAlive == false) {
+                    return ("\n\n\n--->What are you trying to do do ?! You can't heal a dead character !<---\n")
+                } else if (game.player[game.pOneorTwo].heroes[2].lifePoint == game.player[game.pOneorTwo].heroes[2].maxLife) {
+                     return ("\n\n\n--->This character is full life !<---\n")
+                } else if (character.TypeClass == "mage") {
+                    (character as! Mage).healChar(character: game.player[game.pOneorTwo].heroes[2])
+                    } else {
+                        (character as! Paladin).healChar(character: game.player[game.pOneorTwo].heroes[2])
+                    }
+            default:
+                print("\n\n\n--->Choose a valid character to heal !<---\n")
+            }
+    }
+    game.whoplay()
+    return " Character Healed !<---\n"
+}
+
+func    action(game: Game, character: Character) {
+    switch character.TypeClass {
+    case "warrior":
+        attack(game: game, character: character)
+    case "mage":
+        print(heal(game: game, character: character))
+    case "coloss":
+        attack(game: game, character: character)
+    case "dwarf":
+        attack(game: game, character: character)
+    case "paladin":
+        print("What do you want to do ?\n 1. Heal\n 2. Attack")
+        var a = false
+        while (a != true) {
+            if let choice = readLine() {
+                switch choice {
+                    case "1":
+                        print(heal(game: game, character: character))
+                        a = true
+                    case "2":
+                        attack(game: game, character: character)
+                        a = true
+                    default:
+                        print("--->Please choose between 1 Heal or 2 Attack<---")
+                    }
+                }
+            }
+    default:
+        print("wrong class")
+    }
+}
+
+func fight(game: Game) {
+    print("GAME begins in 3 seconds BE READY !!")
     sleep(1)
     for i in 0..<3 {
         print(i + 1)
         sleep(1)
     }
-    var i = 0
-    while (i < 2) {
-        print(game.player[i].playerName)
-        var b = 0
-        while (b < 3) {
-            if (game.player[i].heroes[b].TypeClass == "mage") {
-                game.player[i].heroes[b].displayName()
-                game.player[i].heroes[b].displayLifePoint()
-                (game.player[i].heroes[b] as! Mage).displayHeal()
-                game.player[i].heroes[b].displayTypeClass()
-                b += 1
-            } else if (game.player[i].heroes[b].TypeClass == "paladin") {
-                game.player[i].heroes[b].displayName()
-                game.player[i].heroes[b].displayLifePoint()
-                (game.player[i].heroes[b] as! Paladin).displayHeal()
-                game.player[i].heroes[b].displayAttack()
-                game.player[i].heroes[b].displayTypeClass()
-                b += 1
-            } else {
-                game.player[i].heroes[b].displayName()
-                game.player[i].heroes[b].displayLifePoint()
-                game.player[i].heroes[b].displayAttack()
-                game.player[i].heroes[b].displayTypeClass()
-                b += 1
+    print("\n")
+    while (game.gameOver != true) {
+        game.displayChar()
+        print("[\(game.player[game.pOneorTwo].playerName)]" + " what character do you choose ?")
+        if let choice = readLine() {
+            switch choice {
+            case game.player[game.pOneorTwo].heroes[0].name:
+                if (game.player[game.pOneorTwo].heroes[0].IsAlive != false) {
+                    game.chest(character: game.player[game.pOneorTwo].heroes[0])
+                    action(game: game, character: game.player[game.pOneorTwo].heroes[0])
+                } else {
+                print("\n\n\n-->You can't choose " + game.player[game.pOneorTwo].heroes[0].name + ", he is dead..<--\n" )
+                    }
+            case  game.player[game.pOneorTwo].heroes[1].name:
+                if (game.player[game.pOneorTwo].heroes[1].IsAlive != false) {
+                    game.chest(character: game.player[game.pOneorTwo].heroes[1])
+                    action(game: game, character: game.player[game.pOneorTwo].heroes[1])
+                } else {
+                    print("\n\n\n-->You can't choose " + game.player[game.pOneorTwo].heroes[0].name + ", he is dead..<--\n" )
+                }
+            case game.player[game.pOneorTwo].heroes[2].name:
+                if (game.player[game.pOneorTwo].heroes[2].IsAlive != false) {
+                    game.chest(character: game.player[game.pOneorTwo].heroes[2])
+                    action(game: game, character: game.player[game.pOneorTwo].heroes[2])
+                } else {
+                   print("\n\n\n-->You can't choose " + game.player[game.pOneorTwo].heroes[0].name + ", he is dead..<--\n" )
+                }
+            default:
+                print("\n\n\n--->Please choose a correct name from your characters<---\n")
             }
         }
-        i += 1
+        game.IsGameover() // check if the game is over
     }
 }
 
@@ -214,45 +505,24 @@ func    menu() {
     let game =  Game()
     for i in 0..<2 {
         game.player.append(Player())
-        print("Player\(i + 1) what's your name ?")
-        if let name = readLine() {
-        game.nbrP = i
-        game.player[i].playerName = name
+        print("\n\nPlayer\(i + 1) what's your name ?")
+        var a = false
+        while (a != true) {
+            if let name = readLine() {
+                game.nbrP = i
+                if ((checkName(name: name.lowercased(), allNaChar: game.playerN)) == true) {
+                    print("player name:" + name + "." )
+                    game.player[i].playerName = name
+                    game.playerN.append(game.player[i].playerName.lowercased())
+                    a = true
+                }
+            }
         }
         creatChar(game: game)
     }
- displayChar(game: game)
+    fight(game: game)
 }
 
 menu()
-
-
-/*p1.heroes.append(Paladin(name: "Garrosh"))
-for Character in p1.heroes {
-    if let pala = Character as? Paladin {
-        print(p1.heroes.count)
-        print(pala.name)
-    }
-}
-p1.heroes.append(Mage(name: "lol"))
-p1.heroes.append(Coloss(name: "Tommy"))
-*/
-/*
-    for Character in p1.heroes {
-        if Character is Paladin {
-            print("gooog baby")
-        }
-    }
-
-*/
-
-
-/*for Character in p1.heroes {
-    if let pala = Character as? Mage {
-        print(pala.name)
-    }
-}*/
-//print((p1.heroes[0] as! Paladin).heal)
-
 
 
