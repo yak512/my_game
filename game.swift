@@ -309,7 +309,7 @@ func creatChar(game: Game) {
 
     var i = 0
     while(i < 3) {
-        print("which class do you choose?"
+        print("\nWhich class do you choose?"
             + "\n1. warrior [Life points: 100 | Damages: 10 points]"
             + "\n2. mage [Life points: 70 | Heal: 20 points]"
             + "\n3. coloss [Life points: 150 | Damages: 7 points]"
@@ -347,7 +347,7 @@ func creatChar(game: Game) {
 
 func attack(game: Game, character: Character) {
     game.whoplay()
-    print("which ennemi character do you want to attack ?")
+    print("Which ennemi character do you want to attack ?")
     character.canAttack = false
     while (character.canAttack != true) {
     if let choice = readLine() {
@@ -503,6 +503,7 @@ func fight(game: Game) {
 func    menu() {
     
     let game =  Game()
+    print("Each player is going to enter his name and choose 3 characters and the game will start !")
     for i in 0..<2 {
         game.player.append(Player())
         print("\n\nPlayer\(i + 1) what's your name ?")
