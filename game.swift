@@ -309,12 +309,12 @@ func creatChar(game: Game) {
 
     var i = 0
     while(i < 3) {
-        print("Quel classe choisez vous?"
-            + "\n1. warrior"
-            + "\n2. mage"
-            + "\n3. coloss"
-            + "\n4. dwarf"
-            + "\n5. paladin")
+        print("which class do you choose?"
+            + "\n1. warrior [Life points: 100 | Damages: 10 points]"
+            + "\n2. mage [Life points: 70 | Heal: 20 points]"
+            + "\n3. coloss [Life points: 150 | Damages: 7 points]"
+            + "\n4. dwarf [Life points: 75 | Damages: 15 points]"
+            + "\n5. paladin [Life points: 100 | Damages: 10 points] | Heal: 15 points")
     if let choice = readLine()  {
         
         switch choice {
@@ -339,7 +339,7 @@ func creatChar(game: Game) {
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         default:
-            print("\n\n\n--->I don't understand.. make a choice between 1 and 5<---\n")
+            print("\n\n\n--->Invalid choice.. make a choice between 1 and 5<---\n")
             }
         }
     }
@@ -347,28 +347,28 @@ func creatChar(game: Game) {
 
 func attack(game: Game, character: Character) {
     game.whoplay()
-    print("which ennemi character do u want to attack ?")
+    print("which ennemi character do you want to attack ?")
     character.canAttack = false
     while (character.canAttack != true) {
     if let choice = readLine() {
         switch choice {
         case game.player[game.pOneorTwo].heroes[0].name:
             if (game.player[game.pOneorTwo].heroes[0].IsAlive == false) {
-            print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+            print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
             } else {
                 character.attackChar(character: game.player[game.pOneorTwo].heroes[0])
                 character.canAttack = true
             }
         case game.player[game.pOneorTwo].heroes[1].name:
             if (game.player[game.pOneorTwo].heroes[1].IsAlive == false) {
-               print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+               print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
             } else {
                 character.attackChar(character: game.player[game.pOneorTwo].heroes[1])
                 character.canAttack = true
             }
         case game.player[game.pOneorTwo].heroes[2].name:
             if (game.player[game.pOneorTwo].heroes[2].IsAlive == false) {
-            print("\n\n\n--->This ennemi character is dead choose another one<---\n")
+            print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
         } else {
             character.attackChar(character: game.player[game.pOneorTwo].heroes[2])
             character.canAttack = true
@@ -384,7 +384,7 @@ func heal(game: Game, character: Character) -> String {
     if (game.player[game.pOneorTwo].heroes[0].lifePoint == game.player[game.pOneorTwo].heroes[0].maxLife && game.player[game.pOneorTwo].heroes[1].lifePoint == game.player[game.pOneorTwo].heroes[1].maxLife) && game.player[game.pOneorTwo].heroes[2].lifePoint == game.player[game.pOneorTwo].heroes[2].maxLife {
         return ("\n\n\n--->All the characters are full life! You can't select a healer !<---\n")
     }
-    print("What character do you want to heal ?")
+    print("Which character do you want to heal ?")
     if let choice = readLine() {
         switch choice {
             case game.player[game.pOneorTwo].heroes[0].name:
@@ -468,7 +468,7 @@ func fight(game: Game) {
     print("\n")
     while (game.gameOver != true) {
         game.displayChar()
-        print("[\(game.player[game.pOneorTwo].playerName)]" + " what character do you choose ?")
+        print("[\(game.player[game.pOneorTwo].playerName)]" + " which character do you choose ?")
         if let choice = readLine() {
             switch choice {
             case game.player[game.pOneorTwo].heroes[0].name:
@@ -511,7 +511,6 @@ func    menu() {
             if let name = readLine() {
                 game.nbrP = i
                 if ((checkName(name: name.lowercased(), allNaChar: game.playerN)) == true) {
-                    print("player name:" + name + "." )
                     game.player[i].playerName = name
                     game.playerN.append(game.player[i].playerName.lowercased())
                     a = true
