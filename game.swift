@@ -102,11 +102,11 @@ class Game  {
             if (randomnbr == 1) {
                 switch character.TypeClass {
                     case "warrior":
-                        character.attack = character.attack + 20
+                        character.attack = character.attack + 15
                         character.weapon = true
                         print("\n--->" + character.name + " found a chest with a beautiful sword in it his damages are increased +20 points !<---\n")
                     case "mage":
-                        (character as! Mage).heal = (character as! Mage).heal + 15
+                        (character as! Mage).heal = (character as! Mage).heal + 20
                         character.weapon = true
                         print("\n--->" + character.name + " found a chest with a beautiful stick in it, his healing spell increased +15 points !<---\n")
                     case "coloss":
@@ -196,7 +196,7 @@ class Warrior: Character {
         super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 1, attack: 10, TypeClass: "warrior", maxLife: 100)
+        self.init(name: name, lifePoint: 100, attack: 10, TypeClass: "warrior", maxLife: 100)
     }
     
 }
