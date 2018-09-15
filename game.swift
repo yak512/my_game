@@ -156,7 +156,7 @@ class Character {
     var TypeClass: String
     var weapon = false
     var maxLife: Int
-    
+
     init (name: String, lifePoint: Int, attack: Int, TypeClass: String, maxLife: Int) {
         self.name = name
         self.lifePoint = lifePoint
@@ -200,7 +200,7 @@ class Warrior: Character {
         super.init(name: name, lifePoint: lifePoint, attack: attack, TypeClass: TypeClass, maxLife: maxLife)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 1, attack: 10, TypeClass: "warrior", maxLife: 100)
+        self.init(name: name, lifePoint: 100, attack: 10, TypeClass: "warrior", maxLife: 100)
     }
     
 }
