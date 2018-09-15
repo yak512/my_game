@@ -151,8 +151,8 @@ class Character {
     var name: String
     var canAttack = false
     var attack: Int
-    var IsAlive = true
     var lifePoint: Int
+    var IsAlive = true
     var TypeClass: String
     var weapon = false
     var maxLife: Int
@@ -185,8 +185,9 @@ class Character {
     }
     
     func attackChar(character: Character) {
+        let oldValue = character.lifePoint
         character.lifePoint = character.lifePoint - self.attack
-        print("\n\n\n--->" + self.name + " attacked with \(self.attack) points, " + character.name + " lost \(self.attack) life points!<---\n")
+        print("\n\n\n--->" + self.name + " attacked with \(self.attack) points, " + character.name + " lost \(self.attack) on \(oldValue) life points!<---\n")
         if (character.lifePoint <= 0) {
             character.lifePoint = 0
             character.IsAlive = false
@@ -218,10 +219,16 @@ class Mage: Character {
     func displayHeal() {
         print("Healing points: \(self.heal) | " , terminator:"")
     }
+    
     func healChar(character: Character) {
+        let oldValue = character.lifePoint
         if (character.lifePoint != character.maxLife) {
             character.lifePoint = character.lifePoint + self.heal
-            print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            if (character.lifePoint > character.maxLife) {
+                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !", terminator:"")
+            } else {
+                print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            }
             if (character.lifePoint > character.maxLife) {
                 character.lifePoint = character.maxLife
             }
@@ -286,7 +293,7 @@ func containsOnlyLetters(input: String) -> Bool {
 
 func checkName(name: String, allNaChar: [String]) -> Bool {
         if allNaChar.contains(name) {
-            print("This name already used ! Choose another one.")
+            print("This name is already used ! Choose another one.")
             return false
         }
         else if(containsOnlyLetters(input: name) == false ) {
@@ -318,32 +325,32 @@ func creatChar(game: Game) {
             + "\n2. mage [Life points: 70 | Heal: 20 points]"
             + "\n3. coloss [Life points: 150 | Damages: 7 points]"
             + "\n4. dwarf [Life points: 75 | Damages: 15 points]"
-            + "\n5. paladin [Life points: 100 | Damages: 10 points] | Heal: 15 points")
+            + "\n5. paladin [Life points: 100 | Damages: 10 points] | Heal: 15 points]")
     if let choice = readLine()  {
         
         switch choice {
-        case "1":
+        case "1", "warrior":
             game.player[game.nbrP].heroes.append(Warrior(name:(charName(allNaChar: game.allNaChar))))
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
-        case "2":
+        case "2", "mage":
             game.player[game.nbrP].heroes.append(Mage(name:(charName(allNaChar: game.allNaChar))))
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
-        case "3":
+        case "3", "coloss":
             game.player[game.nbrP].heroes.append(Coloss(name:(charName(allNaChar: game.allNaChar))))
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
-        case "4":
+        case "4", "dwarf":
             game.player[game.nbrP].heroes.append(Dwarf(name:(charName(allNaChar: game.allNaChar))))
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
-        case "5":
+        case "5", "paladin":
             game.player[game.nbrP].heroes.append(Paladin(name:(charName(allNaChar: game.allNaChar))))
             game.allNaChar.append(game.player[game.nbrP].heroes[i].name.lowercased())
             i += 1
         default:
-            print("\n\n\n--->Invalid choice.. make a choice between 1 and 5<---\n")
+            print("\n\n\n--->Invalid choice.. make a choice force exemple by typing 1 to take warrior or typing warrior to take a warrior <---\n")
             }
         }
     }
