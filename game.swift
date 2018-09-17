@@ -269,9 +269,14 @@ class Paladin: Character {
         print("Healing points: \(self.heal) | " , terminator:"")
     }
     func healChar(character: Character) {
+        let oldValue = character.lifePoint
         if (character.lifePoint != character.maxLife) {
             character.lifePoint = character.lifePoint + self.heal
-            print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            if (character.lifePoint > character.maxLife) {
+                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !", terminator:"")
+            } else {
+                print("\n\n\n--->" + character.name + " received \(self.heal) heal points on \(character.maxLife) life points !", terminator:"")
+            }
             if (character.lifePoint > character.maxLife) {
                 character.lifePoint = character.maxLife
             }
