@@ -1,5 +1,5 @@
 //
-//  Weapons.swift
+//  Weapon.swift
 //  Game
 //
 //  Created by BOUHADEB Yacoub on 25/09/2018.
@@ -9,7 +9,7 @@
 import Foundation
 
 // The class Weapons allow use to creat the object Weapon for our characters
-class Weapons {
+class Weapon {
     var name: String
     var damage: Int
     var heal: Int

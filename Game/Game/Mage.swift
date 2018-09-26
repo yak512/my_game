@@ -11,11 +11,11 @@ import Foundation
 // Mage inherit of class Character, Mage is an unique Character with unique specs
 class Mage: Character {
     
-    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapons) {
+    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 70, maxLife: 70, weapon: Weapons(name: "Magic wand", damage: 0, heal: 20))
+        self.init(name: name, lifePoint: 70, maxLife: 70, weapon: Weapon(name: "Magic wand", damage: 0, heal: 20))
     }
     
     func displayHealpoint() {

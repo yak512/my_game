@@ -26,7 +26,7 @@ class Player {
         }
     }
     
-    func displayChar() {
+    func displayCharacters() {
         for b in 0 ..< 3 {
             if (heroes[b] is Mage || heroes[b] is Paladin) {
                 heroes[b].displayName()

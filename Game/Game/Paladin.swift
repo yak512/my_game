@@ -11,11 +11,11 @@ import Foundation
 //Paladin inherit of class Character, Paladin is an unique Character with unique specs
 class Paladin: Character {
     
-    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapons) {
+    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapons(name: "Sharp sword", damage: 10, heal: 15))
+        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sharp sword", damage: 10, heal: 15))
     }
     func displayHeal() {
         print("Healing points: \(weapon.heal) | " , terminator:"")

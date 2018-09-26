@@ -16,7 +16,7 @@
 		745C1D09215ADEFF00DD1F4C /* Coloss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D08215ADEFF00DD1F4C /* Coloss.swift */; };
 		745C1D0B215ADF2E00DD1F4C /* Dwarf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D0A215ADF2E00DD1F4C /* Dwarf.swift */; };
 		745C1D0D215ADF4D00DD1F4C /* Paladin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D0C215ADF4D00DD1F4C /* Paladin.swift */; };
-		745C1D0F215ADF5C00DD1F4C /* Weapons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D0E215ADF5C00DD1F4C /* Weapons.swift */; };
+		745C1D0F215ADF5C00DD1F4C /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D0E215ADF5C00DD1F4C /* Weapon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,7 +42,7 @@
 		745C1D08215ADEFF00DD1F4C /* Coloss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coloss.swift; sourceTree = "<group>"; };
 		745C1D0A215ADF2E00DD1F4C /* Dwarf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dwarf.swift; sourceTree = "<group>"; };
 		745C1D0C215ADF4D00DD1F4C /* Paladin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paladin.swift; sourceTree = "<group>"; };
-		745C1D0E215ADF5C00DD1F4C /* Weapons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weapons.swift; sourceTree = "<group>"; };
+		745C1D0E215ADF5C00DD1F4C /* Weapon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weapon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 				745C1D08215ADEFF00DD1F4C /* Coloss.swift */,
 				745C1D0A215ADF2E00DD1F4C /* Dwarf.swift */,
 				745C1D0C215ADF4D00DD1F4C /* Paladin.swift */,
-				745C1D0E215ADF5C00DD1F4C /* Weapons.swift */,
+				745C1D0E215ADF5C00DD1F4C /* Weapon.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -155,7 +155,7 @@
 				745C1D0D215ADF4D00DD1F4C /* Paladin.swift in Sources */,
 				745C1D09215ADEFF00DD1F4C /* Coloss.swift in Sources */,
 				745C1CFF215ADE3000DD1F4C /* Game.swift in Sources */,
-				745C1D0F215ADF5C00DD1F4C /* Weapons.swift in Sources */,
+				745C1D0F215ADF5C00DD1F4C /* Weapon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

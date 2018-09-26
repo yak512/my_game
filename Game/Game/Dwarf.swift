@@ -10,11 +10,11 @@ import Foundation
 
 // Dward inherit of class Character, Dwarf is an unique Character with unique specs
 class Dwarf: Character {
-    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapons) {
+    override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 75, maxLife: 75, weapon: Weapons(name: "Sharp axe", damage: 15, heal: 0))
+        self.init(name: name, lifePoint: 75, maxLife: 75, weapon: Weapon(name: "Sharp axe", damage: 15, heal: 0))
     }
     
 }
