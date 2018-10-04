@@ -28,6 +28,7 @@ class Player {
     
     func displayCharacters() {
         for b in 0 ..< 3 {
+            print("\(b + 1)) ", terminator:"")
             if (heroes[b] is Mage || heroes[b] is Paladin) {
                 heroes[b].displayName()
                 heroes[b].displayLifePoint()

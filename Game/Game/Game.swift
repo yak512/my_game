@@ -13,8 +13,6 @@ extension String {
         for chr in self {
             if !(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") {
                 return false
-            } else if (self == "") {
-                return false
             }
         }
         return true
@@ -45,13 +43,17 @@ class Game  {
     }
     
     // This function tell you to choose a name and it return a correct name, a unique name
-    private func chooseNameForCharacter(allCharactersNames: [String]) -> String {
+    private func chooseName(allNames: [String]) -> String {
         var a: Bool = false
         var CorrectName: String = ""
-        print("Choose a name for your character")
+        print("Choose a name")
         while (a != true ) {
             if let name = readLine() {
-                a = checkName(name: (name.lowercased()), allNames: allCharactersNames)
+                a = checkName(name: (name.lowercased()), allNames: allNames)
+                if name.isEmpty {
+                    a = false
+                    print("Choose a valid name")
+                }
                 CorrectName = name
             }
         }
@@ -110,26 +112,27 @@ class Game  {
             if let choice = readLine()  {
                 switch choice {
                 case "1", "warrior":
-                    let newCharacter = Warrior(name:(chooseNameForCharacter(allCharactersNames: allNameCharacters)))
+                    let newCharacter = Warrior(name:(chooseName(allNames: allNameCharacters)))
                     players[numberPlayer].heroes.append(newCharacter)
                     allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
                     i += 1
                 case "2", "mage":
-                    let newCharacter = Mage(name:(chooseNameForCharacter(allCharactersNames: allNameCharacters)))
+                    let newCharacter = Mage(name:(chooseName(allNames: allNameCharacters)))
                     players[numberPlayer].heroes.append(newCharacter)
                     allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
                     i += 1
                 case "3", "coloss":
-                    let newCharacter = Coloss(name:(chooseNameForCharacter(allCharactersNames: allNameCharacters)))
+                    let newCharacter = Coloss(name:(chooseName(allNames: allNameCharacters)))
                     players[numberPlayer].heroes.append(newCharacter)
                     allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
+                    i += 1
                 case "4", "dwarf":
-                    let newCharacter = Dwarf(name:(chooseNameForCharacter(allCharactersNames: allNameCharacters)))
+                    let newCharacter = Dwarf(name:(chooseName(allNames: allNameCharacters)))
                     players[numberPlayer].heroes.append(newCharacter)
                     allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
                     i += 1
                 case "5", "paladin":
-                    let newCharacter = Paladin(name:(chooseNameForCharacter(allCharactersNames: allNameCharacters)))
+                    let newCharacter = Paladin(name:(chooseName(allNames: allNameCharacters)))
                     players[numberPlayer].heroes.append(newCharacter)
                     allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
                     i += 1
@@ -219,20 +222,12 @@ class Game  {
     // This function creat the players and their characters
     private func creatTeams()  {
         for i in 0..<2 {
+            game.numberPlayer = i
             players.append(Player())
-            print("\n\nPlayer\(i + 1) what's your name ?")
-            var a = false
-            while (a != true) {
-                if let name = readLine() {
-                    numberPlayer = i
-                    if checkName(name: name.lowercased(), allNames: playerNames) == true {
-                        players[i].playerName = name
-                        playerNames.append(players[i].playerName.lowercased())
-                        a = true
-                    }
-                }
-                creatChararacters()
-            }
+            print("\n\nPlayer\(i + 1) ", terminator:"")
+            players[i].playerName = chooseName(allNames: playerNames)
+            playerNames.append(players[i].playerName.lowercased())
+            creatChararacters()
         }
     }
         
