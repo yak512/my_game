@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		740CD6C42153927E00370CA0 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740CD6C32153927E00370CA0 /* main.swift */; };
+		7431A9DC2168E21A00975106 /* Destructive sword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9DB2168E21A00975106 /* Destructive sword.swift */; };
+		7431A9DE2168E2E900975106 /* Magic stick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9DD2168E2E900975106 /* Magic stick.swift */; };
+		7431A9E02168E32400975106 /* Heavy sword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9DF2168E32400975106 /* Heavy sword.swift */; };
+		7431A9E22168E36000975106 /* Destructive axe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9E12168E36000975106 /* Destructive axe.swift */; };
+		7431A9E42168E3A100975106 /* Magic shield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9E32168E3A100975106 /* Magic shield.swift */; };
+		7431A9E62168E3DA00975106 /* Magic sword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7431A9E52168E3DA00975106 /* Magic sword.swift */; };
 		745C1CFF215ADE3000DD1F4C /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1CFE215ADE3000DD1F4C /* Game.swift */; };
 		745C1D01215ADE6F00DD1F4C /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D00215ADE6F00DD1F4C /* Character.swift */; };
 		745C1D03215ADE9B00DD1F4C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745C1D02215ADE9B00DD1F4C /* Player.swift */; };
@@ -34,6 +40,12 @@
 /* Begin PBXFileReference section */
 		740CD6C02153927E00370CA0 /* Game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Game; sourceTree = BUILT_PRODUCTS_DIR; };
 		740CD6C32153927E00370CA0 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		7431A9DB2168E21A00975106 /* Destructive sword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Destructive sword.swift"; sourceTree = "<group>"; };
+		7431A9DD2168E2E900975106 /* Magic stick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Magic stick.swift"; sourceTree = "<group>"; };
+		7431A9DF2168E32400975106 /* Heavy sword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Heavy sword.swift"; sourceTree = "<group>"; };
+		7431A9E12168E36000975106 /* Destructive axe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Destructive axe.swift"; sourceTree = "<group>"; };
+		7431A9E32168E3A100975106 /* Magic shield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Magic shield.swift"; sourceTree = "<group>"; };
+		7431A9E52168E3DA00975106 /* Magic sword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Magic sword.swift"; sourceTree = "<group>"; };
 		745C1CFE215ADE3000DD1F4C /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		745C1D00215ADE6F00DD1F4C /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		745C1D02215ADE9B00DD1F4C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -80,6 +92,7 @@
 				745C1D00215ADE6F00DD1F4C /* Character.swift */,
 				745C1D02215ADE9B00DD1F4C /* Player.swift */,
 				745C1D04215ADEB400DD1F4C /* Warrior.swift */,
+				7431A9E72168E4E100975106 /* Weapons */,
 				745C1D06215ADEDF00DD1F4C /* Mage.swift */,
 				745C1D08215ADEFF00DD1F4C /* Coloss.swift */,
 				745C1D0A215ADF2E00DD1F4C /* Dwarf.swift */,
@@ -87,6 +100,19 @@
 				745C1D0E215ADF5C00DD1F4C /* Weapon.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		7431A9E72168E4E100975106 /* Weapons */ = {
+			isa = PBXGroup;
+			children = (
+				7431A9DB2168E21A00975106 /* Destructive sword.swift */,
+				7431A9DD2168E2E900975106 /* Magic stick.swift */,
+				7431A9DF2168E32400975106 /* Heavy sword.swift */,
+				7431A9E12168E36000975106 /* Destructive axe.swift */,
+				7431A9E32168E3A100975106 /* Magic shield.swift */,
+				7431A9E52168E3DA00975106 /* Magic sword.swift */,
+			);
+			path = Weapons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,16 +172,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7431A9E22168E36000975106 /* Destructive axe.swift in Sources */,
 				745C1D03215ADE9B00DD1F4C /* Player.swift in Sources */,
 				745C1D05215ADEB400DD1F4C /* Warrior.swift in Sources */,
 				745C1D0B215ADF2E00DD1F4C /* Dwarf.swift in Sources */,
 				745C1D01215ADE6F00DD1F4C /* Character.swift in Sources */,
 				745C1D07215ADEDF00DD1F4C /* Mage.swift in Sources */,
+				7431A9E02168E32400975106 /* Heavy sword.swift in Sources */,
 				740CD6C42153927E00370CA0 /* main.swift in Sources */,
 				745C1D0D215ADF4D00DD1F4C /* Paladin.swift in Sources */,
+				7431A9E42168E3A100975106 /* Magic shield.swift in Sources */,
 				745C1D09215ADEFF00DD1F4C /* Coloss.swift in Sources */,
+				7431A9DC2168E21A00975106 /* Destructive sword.swift in Sources */,
+				7431A9E62168E3DA00975106 /* Magic sword.swift in Sources */,
 				745C1CFF215ADE3000DD1F4C /* Game.swift in Sources */,
 				745C1D0F215ADF5C00DD1F4C /* Weapon.swift in Sources */,
+				7431A9DE2168E2E900975106 /* Magic stick.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

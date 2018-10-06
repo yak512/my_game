@@ -22,10 +22,23 @@ extension String {
 //Class Game where we we have our players, porperties and methode for the game
 class Game  {
     var players = [Player]()
-    private var allNameCharacters = [String]()
-    private var playerNames = [String]()
-    var numberPlayer = 0
-    private var numberRound = 0
+    private var playerNames: [String] {
+        var names = [String]()
+        for player in players {
+            names.append(player.playerName)
+        }
+        return names
+    }
+    var namesOfCharacters: [String] {
+        var names = [String]()
+        for player in players {
+            for hero in player.heroes {
+                names.append(hero.name)
+            }
+        }
+        return names
+    }
+    var numberRound = 0
     private var gameOver = false
     var pOneorTwo = 0
     
@@ -43,31 +56,37 @@ class Game  {
     }
     
     // This function tell you to choose a name and it return a correct name, a unique name
-    private func chooseName(allNames: [String]) -> String {
-        var a: Bool = false
-        var CorrectName: String = ""
+    func chooseName(allNames: [String]) -> String {
+        var correctName: String = ""
         print("Choose a name")
-        while (a != true ) {
+        while (correctName.isEmpty) {
             if let name = readLine() {
-                a = checkName(name: (name.lowercased()), allNames: allNames)
-                if name.isEmpty {
-                    a = false
-                    print("Choose a valid name")
+                if checkName(name: (name.lowercased()), allNames: allNames) {
+                    correctName = name
                 }
-                CorrectName = name
             }
         }
-        return CorrectName
+        return correctName
     }
     
-    // This function is callse in fight to select a character of a player
-    private func choosenCharacterForAction(choice: Int) {
-        if players[game.pOneorTwo].heroes[choice].IsAlive != false {
-            chest(character: players[pOneorTwo].heroes[choice])
-            players[game.pOneorTwo].heroes[choice].action()
-        } else {
-            print("\n\n\n-->You can't choose " + players[pOneorTwo].heroes[choice].name + ", he is dead..<--\n" )
+    func chooseTypeCharacter() -> Character? {
+        if let choice = readLine()  {
+            switch choice {
+            case "1", "warrior":
+                return(Warrior(name:(chooseName(allNames: namesOfCharacters))))
+            case "2", "mage":
+                return(Mage(name:(chooseName(allNames: namesOfCharacters))))
+            case "3", "coloss":
+                return(Coloss(name:(chooseName(allNames: namesOfCharacters))))
+            case "4", "dwarf":
+                return(Dwarf(name:(chooseName(allNames: namesOfCharacters))))
+            case "5", "paladin":
+                return(Paladin(name:(chooseName(allNames: namesOfCharacters))))
+            default:
+                print("\n\n\n--->Invalid choice.. make a choice force exemple by typing 1 to take warrior or typing warrior to take a warrior <---\n")
+            }
         }
+        return nil
     }
     
     // In this function  the character choose a character to do an action
@@ -82,66 +101,63 @@ class Game  {
         while (gameOver != true) {
             displayPlayers()
             print("[\(players[pOneorTwo].playerName)]" + " which character do you choose ? Choose between 1 and 3")
-            game.numberRound += 1
+            numberRound += 1
+            let currentPlayerHeroes = players[pOneorTwo].heroes
+            let playerDontPlayHeores = players[(pOneorTwo + 1) % 2].heroes
+            let currentPlayerCharacter = choosenCharacterForAction(currentPlayerHeroes)
+            chest(character: currentPlayerCharacter!)
+            if currentPlayerCharacter is Paladin {
+                (currentPlayerCharacter as! Paladin).paladinHealOrAttack() }
+            if currentPlayerCharacter is Mage || (currentPlayerCharacter is Paladin && (currentPlayerCharacter as! Paladin).paladinAction == true ){
+                if currentPlayerCharacter is Mage {
+                    print("Which character do you want to heal ?")
+                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
+                    (currentPlayerCharacter as! Mage).healChararacter(character: characterToHeal!)
+                }
+                else {
+                    print("Which character do you want to heal ?")
+                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
+                    (currentPlayerCharacter as! Paladin).healChararacter(character: characterToHeal!)
+                }
+            } else {
+                print("Which character do you want to attack ?")
+                let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
+                currentPlayerCharacter!.attackChararacter(character: characterToAttack!)
+            }
+            changePlayer()
+            isGameOver()
+        }
+        
+    }
+    
+    private func choosenCharacterForAction( _ playerHeroes: [Character]) -> Character? {
+        var chooseHero = false
+        while (chooseHero != true) {
             if let choice = readLine() {
                 switch choice {
                 case "1":
-                    choosenCharacterForAction(choice: 0)
+                    chooseHero = playerHeroes[0].correctCharacter()
+                    if chooseHero == true {
+                    return playerHeroes[0]
+                    }
                 case "2":
-                    choosenCharacterForAction(choice: 1)
+                    chooseHero = playerHeroes[1].correctCharacter()
+                    if chooseHero == true {
+                    return playerHeroes[1]
+                    }
                 case "3":
-                    choosenCharacterForAction(choice: 2)
+                    chooseHero = playerHeroes[2].correctCharacter()
+                    if chooseHero == true {
+                    return playerHeroes[2]
+                    }
                 default:
                     print("\n\n\n--->Please choose between 1 and 3 !<---\n")
                 }
             }
-            isGameOver()
         }
+        return nil
     }
     
-    // In this function we creat the 3 characters of a player, he can choose between 5 different characters
-    private func creatChararacters() {
-        var i = 0
-        while (i < 3) {
-            print("\nWhich class do you choose?"
-                + "\n1. warrior [Life points: 100 | Damages: 10 points]"
-                + "\n2. mage [Life points: 70 | Heal: 20 points]"
-                + "\n3. coloss [Life points: 150 | Damages: 7 points]"
-                + "\n4. dwarf [Life points: 75 | Damages: 15 points]"
-                + "\n5. paladin [Life points: 100 | Damages: 10 points | Heal: 15 points]")
-            if let choice = readLine()  {
-                switch choice {
-                case "1", "warrior":
-                    let newCharacter = Warrior(name:(chooseName(allNames: allNameCharacters)))
-                    players[numberPlayer].heroes.append(newCharacter)
-                    allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
-                    i += 1
-                case "2", "mage":
-                    let newCharacter = Mage(name:(chooseName(allNames: allNameCharacters)))
-                    players[numberPlayer].heroes.append(newCharacter)
-                    allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
-                    i += 1
-                case "3", "coloss":
-                    let newCharacter = Coloss(name:(chooseName(allNames: allNameCharacters)))
-                    players[numberPlayer].heroes.append(newCharacter)
-                    allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
-                    i += 1
-                case "4", "dwarf":
-                    let newCharacter = Dwarf(name:(chooseName(allNames: allNameCharacters)))
-                    players[numberPlayer].heroes.append(newCharacter)
-                    allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
-                    i += 1
-                case "5", "paladin":
-                    let newCharacter = Paladin(name:(chooseName(allNames: allNameCharacters)))
-                    players[numberPlayer].heroes.append(newCharacter)
-                    allNameCharacters.append(players[numberPlayer].heroes[i].name.lowercased())
-                    i += 1
-                default:
-                    print("\n\n\n--->Invalid choice.. make a choice force exemple by typing 1 to take warrior or typing warrior to take a warrior <---\n")
-                }
-            }
-        }
-    }
     
     // This function verify is a player is alive, so it can tell if the game is over our not
     private func isGameOver() {
@@ -160,7 +176,7 @@ class Game  {
     }
     
     // This function tell us which player should play
-     func changePlayer() {
+    func changePlayer() {
         if self.pOneorTwo == 0 {
             self.pOneorTwo = 1
         } else {
@@ -170,9 +186,9 @@ class Game  {
     
     // This function displayer all the characters of the players
     private func displayPlayers() {
-        for i in 0 ..< 2 {
-            print("[\(players[i].playerName)]\n")
-            players[i].displayCharacters()
+        for player in players {
+            print("[\(player.playerName)]\n")
+            player.displayCharacters()
             print("\n")
         }
     }
@@ -183,34 +199,34 @@ class Game  {
         
         if randomNbr == 1 && character.chest == false {
             if character is Warrior {
-                let newWeapon = Weapon(name: "Destructive sword", damage: 20, heal: 0)
+                let newWeapon = Destructivesword()
                 print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
                 character.weapon = newWeapon
                 character.chest = true
             } else if character is Mage {
-                let newWeapon = Weapon(name: "Magic stick", damage: 0, heal: 25)
+                let newWeapon = Magicstick()
                 print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", heal increase by 10 points !")
                 character.weapon = newWeapon
                 character.chest = true
             } else if character is Coloss {
-                let newWeapon = Weapon(name: "Heavy sword", damage: 15, heal: 0)
+                let newWeapon = Heavysword()
                 print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 8 points !")
                 character.weapon = newWeapon
                 character.chest = true
             } else if character is Dwarf {
-                let newWeapon = Weapon(name: "Destructive Axe", damage: 25, heal: 0)
+                let newWeapon = Destructiveaxe()
                 print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
                 character.weapon = newWeapon
                 character.chest = true
             } else {
                 let nb = Int(arc4random_uniform(2))
                 if  nb == 1 {
-                    let newWeapon = Weapon(name: "Magic shield", damage: 10, heal: 25)
+                    let newWeapon = Magicshield()
                     print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", heal increase by 10 points !")
                     character.weapon = newWeapon
                     character.chest = true
                 } else {
-                    let newWeapon = Weapon(name: "Magic sword", damage: 20, heal: 15)
+                    let newWeapon = Magicsword()
                     print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
                     character.weapon = newWeapon
                     character.chest = true
@@ -222,19 +238,18 @@ class Game  {
     // This function creat the players and their characters
     private func creatTeams()  {
         for i in 0..<2 {
-            game.numberPlayer = i
-            players.append(Player())
+            let player = Player()
             print("\n\nPlayer\(i + 1) ", terminator:"")
-            players[i].playerName = chooseName(allNames: playerNames)
-            playerNames.append(players[i].playerName.lowercased())
-            creatChararacters()
+            player.playerName = chooseName(allNames: playerNames)
+            players.append(player)
+            player.createChararacters()
         }
     }
-        
+    
     // This function start the game
-        func start() {
-            print("Each player is going to enter his name and choose 3 characters and the game will start !")
-            creatTeams()
-            fight()
-        }
+    func start() {
+        print("Each player is going to enter his name and choose 3 characters and the game will start !")
+        creatTeams()
+        fight()
+    }
 }

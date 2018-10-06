@@ -10,6 +10,7 @@ import Foundation
 
 //Paladin inherit of class Character, Paladin is an unique Character with unique specs
 class Paladin: Character {
+   var  paladinAction: Bool = false
     
     override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
@@ -17,17 +18,23 @@ class Paladin: Character {
     convenience init(name: String) {
         self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sharp sword", damage: 10, heal: 15))
     }
+    
     func displayHeal() {
         print("Healing points: \(weapon.heal) | " , terminator:"")
     }
-    func healChar(character: Character) {
-        let oldValue = character.lifePoint
-        if (character.lifePoint != character.maxLife) {
+    
+    func healChararacter(character: Character) {
+        if (character.lifePoint == character.maxLife) {
+            print("\n\n\n--->This character is full life !<---\n")
+            game.changePlayer()
+            game.numberRound -= 1
+        } else if (character.lifePoint != character.maxLife) {
+            let oldValue = character.lifePoint
             character.lifePoint = character.lifePoint + weapon.heal
             if (character.lifePoint > character.maxLife) {
-                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !", terminator:"")
+                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !")
             } else {
-                print("\n\n\n--->" + character.name + " received \(weapon.heal) heal points on \(character.maxLife) life points !", terminator:"")
+                print("\n\n\n--->" + character.name + " received \(weapon.heal) heal points on \(character.maxLife) life points !")
             }
             if (character.lifePoint > character.maxLife) {
                 character.lifePoint = character.maxLife
@@ -35,4 +42,22 @@ class Paladin: Character {
         }
     }
     
+    func paladinHealOrAttack()  {
+        print("What do you want to do ?\n 1. Heal\n 2. Attack")
+        var chooseAction = false
+        while (chooseAction != true) {
+            if let choice = readLine() {
+                switch choice {
+                case "1":
+                    paladinAction = true
+                    chooseAction = true
+                case "2":
+                    paladinAction = false
+                    chooseAction = true
+                default:
+                    print("--->Please choose between 1 Heal or 2 Attack<---")
+                }
+            }
+        }
+    }
 }

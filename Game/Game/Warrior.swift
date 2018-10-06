@@ -14,7 +14,7 @@ class Warrior: Character {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
     }
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sword of fury", damage: 10, heal: 0))
+        self.init(name: name, lifePoint: 1, maxLife: 100, weapon: Weapon(name: "Sword of fury", damage: 10, heal: 0))
     }
     
 }

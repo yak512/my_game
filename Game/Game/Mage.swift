@@ -23,13 +23,17 @@ class Mage: Character {
     }
     
     func healChararacter(character: Character) {
-        let oldValue = character.lifePoint
-        if (character.lifePoint != character.maxLife) {
+        if (character.lifePoint == character.maxLife) {
+            print("\n\n\n--->This character is full life !<---\n")
+            game.changePlayer()
+            game.numberRound -= 1
+        } else if (character.lifePoint != character.maxLife) {
+            let oldValue = character.lifePoint
             character.lifePoint = character.lifePoint + weapon.heal
             if (character.lifePoint > character.maxLife) {
-                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !", terminator:"")
+                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !")
             } else {
-                print("\n\n\n--->" + character.name + " received \(weapon.heal) heal points on \(character.maxLife) life points !", terminator:"")
+                print("\n\n\n--->" + character.name + " received \(weapon.heal) heal points on \(character.maxLife) life points !")
             }
             if (character.lifePoint > character.maxLife) {
                 character.lifePoint = character.maxLife
@@ -37,3 +41,4 @@ class Mage: Character {
         }
     }
 }
+
