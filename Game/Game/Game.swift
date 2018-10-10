@@ -105,24 +105,25 @@ class Game  {
             let currentPlayerHeroes = players[pOneorTwo].heroes
             let playerDontPlayHeores = players[(pOneorTwo + 1) % 2].heroes
             let currentPlayerCharacter = choosenCharacterForAction(currentPlayerHeroes)
-            chest(character: currentPlayerCharacter!)
-            if currentPlayerCharacter is Paladin {
-                (currentPlayerCharacter as! Paladin).paladinHealOrAttack() }
-            if currentPlayerCharacter is Mage || (currentPlayerCharacter is Paladin && (currentPlayerCharacter as! Paladin).paladinAction == true ){
-                if currentPlayerCharacter is Mage {
-                    print("Which character do you want to heal ?")
+            var paladinAttackOrHeal = false
+            chest(character: currentPlayerCharacter)
+            if let verifyCurrentPlayerCharacterIsPaladin = currentPlayerCharacter as? Paladin {
+                paladinAttackOrHeal = verifyCurrentPlayerCharacterIsPaladin.paladinHealOrAttack()
+            }
+            if currentPlayerCharacter is Mage || (currentPlayerCharacter is Paladin && paladinAttackOrHeal == true ) {
+                print("Which character do you want to heal ?")
+                if let verifyCurrentPlayerCharacterIsMage = currentPlayerCharacter as? Mage {
                     let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                    (currentPlayerCharacter as! Mage).healChararacter(character: characterToHeal!)
+                    verifyCurrentPlayerCharacterIsMage.chararacterToHeal(character: characterToHeal)
                 }
-                else {
-                    print("Which character do you want to heal ?")
+                else if let verifyCurrentPlayerCharacterIsPaladin = currentPlayerCharacter as? Paladin {
                     let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                    (currentPlayerCharacter as! Paladin).healChararacter(character: characterToHeal!)
+                    verifyCurrentPlayerCharacterIsPaladin.characterToHeal(character: characterToHeal)
                 }
             } else {
                 print("Which character do you want to attack ?")
                 let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
-                currentPlayerCharacter!.attackChararacter(character: characterToAttack!)
+                currentPlayerCharacter.chararacterToAttack(character: characterToAttack)
             }
             changePlayer()
             isGameOver()
@@ -130,32 +131,27 @@ class Game  {
         
     }
     
-    private func choosenCharacterForAction( _ playerHeroes: [Character]) -> Character? {
-        var chooseHero = false
-        while (chooseHero != true) {
+    private func choosenCharacterForAction(_ playerHeroes: [Character]) -> Character {
+        while (true) {
             if let choice = readLine() {
                 switch choice {
                 case "1":
-                    chooseHero = playerHeroes[0].correctCharacter()
-                    if chooseHero == true {
-                    return playerHeroes[0]
+                    if playerHeroes[0].correctCharacter() {
+                        return playerHeroes[0]
                     }
                 case "2":
-                    chooseHero = playerHeroes[1].correctCharacter()
-                    if chooseHero == true {
-                    return playerHeroes[1]
+                    if playerHeroes[1].correctCharacter() {
+                        return playerHeroes[1]
                     }
                 case "3":
-                    chooseHero = playerHeroes[2].correctCharacter()
-                    if chooseHero == true {
-                    return playerHeroes[2]
+                    if playerHeroes[2].correctCharacter() {
+                        return playerHeroes[2]
                     }
                 default:
                     print("\n\n\n--->Please choose between 1 and 3 !<---\n")
                 }
             }
         }
-        return nil
     }
     
     
@@ -177,11 +173,7 @@ class Game  {
     
     // This function tell us which player should play
     func changePlayer() {
-        if self.pOneorTwo == 0 {
-            self.pOneorTwo = 1
-        } else {
-            self.pOneorTwo = 0
-        }
+        pOneorTwo = pOneorTwo == 0 ? 1 : 0
     }
     
     // This function displayer all the characters of the players

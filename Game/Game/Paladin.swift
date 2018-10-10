@@ -10,8 +10,6 @@ import Foundation
 
 //Paladin inherit of class Character, Paladin is an unique Character with unique specs
 class Paladin: Character {
-   var  paladinAction: Bool = false
-    
     override init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         super.init(name: name, lifePoint: lifePoint, maxLife: maxLife, weapon: weapon)
     }
@@ -23,7 +21,7 @@ class Paladin: Character {
         print("Healing points: \(weapon.heal) | " , terminator:"")
     }
     
-    func healChararacter(character: Character) {
+    func characterToHeal(character: Character) {
         if (character.lifePoint == character.maxLife) {
             print("\n\n\n--->This character is full life !<---\n")
             game.changePlayer()
@@ -42,18 +40,18 @@ class Paladin: Character {
         }
     }
     
-    func paladinHealOrAttack()  {
+    func paladinHealOrAttack() -> Bool {
         print("What do you want to do ?\n 1. Heal\n 2. Attack")
         var chooseAction = false
         while (chooseAction != true) {
             if let choice = readLine() {
                 switch choice {
                 case "1":
-                    paladinAction = true
                     chooseAction = true
+                    return true
                 case "2":
-                    paladinAction = false
                     chooseAction = true
+                    return false
                 default:
                     print("--->Please choose between 1 Heal or 2 Attack<---")
                 }

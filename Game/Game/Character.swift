@@ -57,7 +57,7 @@ class Character {
         
     }
     
-    func attackChararacter(character: Character) {
+    func chararacterToAttack(character: Character) {
         if character.IsAlive == false {
             print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
         } else {
@@ -73,7 +73,7 @@ class Character {
     }
     
     func correctCharacter() -> Bool {
-        if self.IsAlive == false {
+        if IsAlive == false {
             print("\n\n\n--->This Character is dead, please choose another one<---\n")
             return false
         } 

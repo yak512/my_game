@@ -22,7 +22,7 @@ class Mage: Character {
         print("Healing points: \(weapon.heal) | " , terminator:"")
     }
     
-    func healChararacter(character: Character) {
+    func chararacterToHeal(character: Character) {
         if (character.lifePoint == character.maxLife) {
             print("\n\n\n--->This character is full life !<---\n")
             game.changePlayer()
