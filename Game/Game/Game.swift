@@ -40,7 +40,7 @@ class Game  {
     }
     var numberRound = 0
     private var gameOver = false
-    var pOneorTwo = 0
+    var playerOneOrTwo = 0
     
     // This function verify is a name is already use and call the function containsLetters() to verify if the character string is correct
     private func checkName(name: String, allNames: [String]) -> Bool {
@@ -88,9 +88,26 @@ class Game  {
         }
         return nil
     }
+    private func chooseHealOrAttack() -> Bool {
+        print("Do you wanto heal or Attack ?\n 1 heal \n 2 attack")
+        var healOrAttack: Bool?
+        
+        while (healOrAttack == nil) {
+            if let choose = readLine() {
+                switch choose {
+                case "1", "heal":
+                    healOrAttack = true
+                case "2", "attack":
+                    healOrAttack = false
+                default:
+                    print("Please choose 1 or 2, you can also write heal to heal and attack to attack")
+                }
+            }
+        }
+        return healOrAttack!
+    }
     
-    // In this function  the character choose a character to do an action
-    private func fight() {
+    private func gameStartTimer() {
         print("GAME begins in 3 seconds BE READY !!")
         sleep(1)
         for i in 0..<3 {
@@ -98,37 +115,55 @@ class Game  {
             sleep(1)
         }
         print("\n")
+    }
+    
+    private func chooseCharacter() ->([Character], [Character], Character) {
+        
+        print("[\(players[playerOneOrTwo].playerName)]" + " which character do you choose ? Choose between 1 and 3")
+        let currentPlayerHeroes = players[playerOneOrTwo].heroes
+        let playerDontPlayHeores = players[(playerOneOrTwo + 1) % 2].heroes
+        let currentPlayerCharacter = choosenCharacterForAction(currentPlayerHeroes)
+        
+        return (currentPlayerHeroes, playerDontPlayHeores, currentPlayerCharacter)
+    }
+    
+    // In this function  the character choose a character to do an action
+    private func fight() {
+        
+        gameStartTimer()
+        
         while (gameOver != true) {
             displayPlayers()
-            print("[\(players[pOneorTwo].playerName)]" + " which character do you choose ? Choose between 1 and 3")
+            
             numberRound += 1
-            let currentPlayerHeroes = players[pOneorTwo].heroes
-            let playerDontPlayHeores = players[(pOneorTwo + 1) % 2].heroes
-            let currentPlayerCharacter = choosenCharacterForAction(currentPlayerHeroes)
-            var paladinAttackOrHeal = false
+            
+            let (currentPlayerHeroes, playerDontPlayHeores, currentPlayerCharacter) = chooseCharacter()
+            
             chest(character: currentPlayerCharacter)
-            if let verifyCurrentPlayerCharacterIsPaladin = currentPlayerCharacter as? Paladin {
-                paladinAttackOrHeal = verifyCurrentPlayerCharacterIsPaladin.paladinHealOrAttack()
-            }
-            if currentPlayerCharacter is Mage || (currentPlayerCharacter is Paladin && paladinAttackOrHeal == true ) {
+            
+            if currentPlayerCharacter.canHeal && !currentPlayerCharacter.canAttack {
                 print("Which character do you want to heal ?")
-                if let verifyCurrentPlayerCharacterIsMage = currentPlayerCharacter as? Mage {
-                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                    verifyCurrentPlayerCharacterIsMage.chararacterToHeal(character: characterToHeal)
-                }
-                else if let verifyCurrentPlayerCharacterIsPaladin = currentPlayerCharacter as? Paladin {
-                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                    verifyCurrentPlayerCharacterIsPaladin.characterToHeal(character: characterToHeal)
-                }
-            } else {
+                let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
+                currentPlayerCharacter.doActionOn(character: characterToHeal, isFriend: true)
+                
+            } else if !currentPlayerCharacter.canHeal && currentPlayerCharacter.canAttack {
                 print("Which character do you want to attack ?")
                 let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
-                currentPlayerCharacter.chararacterToAttack(character: characterToAttack)
+                currentPlayerCharacter.doActionOn(character: characterToAttack, isFriend: false)
+            } else {
+                if chooseHealOrAttack() {
+                    print("Which character do you want to heal ?")
+                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
+                    currentPlayerCharacter.doActionOn(character: characterToHeal, isFriend: true)
+                } else {
+                    print("Which character do you want to attack ?")
+                    let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
+                    currentPlayerCharacter.doActionOn(character: characterToAttack, isFriend: false)
+                }
             }
             changePlayer()
             isGameOver()
         }
-        
     }
     
     private func choosenCharacterForAction(_ playerHeroes: [Character]) -> Character {
@@ -173,7 +208,7 @@ class Game  {
     
     // This function tell us which player should play
     func changePlayer() {
-        pOneorTwo = pOneorTwo == 0 ? 1 : 0
+        playerOneOrTwo = playerOneOrTwo == 0 ? 1 : 0
     }
     
     // This function displayer all the characters of the players
@@ -187,42 +222,34 @@ class Game  {
     
     // This function creat a new object for one character the object weapon, every characters have a chance to find a chest
     private func chest(character: Character) {
-        let randomNbr =  Int(arc4random_uniform(10))
+        let randomNbr =  Int(arc4random_uniform(2))
         
+        let oldWeapon = character.weapon
+        var paladinShieldOrSword = false
         if randomNbr == 1 && character.chest == false {
             if character is Warrior {
-                let newWeapon = Destructivesword()
-                print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
-                character.weapon = newWeapon
-                character.chest = true
+                character.weapon = Destructivesword()
             } else if character is Mage {
-                let newWeapon = Magicstick()
-                print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", heal increase by 10 points !")
-                character.weapon = newWeapon
-                character.chest = true
+                character.weapon = MagicStick()
             } else if character is Coloss {
-                let newWeapon = Heavysword()
-                print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 8 points !")
-                character.weapon = newWeapon
-                character.chest = true
+                character.weapon = HeavySword()
             } else if character is Dwarf {
-                let newWeapon = Destructiveaxe()
-                print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
-                character.weapon = newWeapon
-                character.chest = true
+                character.weapon = DestructiveAxe()
             } else {
                 let nb = Int(arc4random_uniform(2))
                 if  nb == 1 {
-                    let newWeapon = Magicshield()
-                    print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", heal increase by 10 points !")
-                    character.weapon = newWeapon
-                    character.chest = true
+                    character.weapon = MagicShield()
+                    print(character.name + " found a chest, he replace his " + oldWeapon.name + " by a " + character.weapon.name + ", heal increase by 10 points !")
+                    paladinShieldOrSword = true
                 } else {
-                    let newWeapon = Magicsword()
-                    print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
-                    character.weapon = newWeapon
-                    character.chest = true
+                    character.weapon = MagicSword()
+                    // print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
                 }
+            }
+            if character is Mage || (character is Paladin && paladinShieldOrSword == true) {
+                print(character.name + " found a chest, he replace his " + oldWeapon.name + " by a " + character.weapon.name + ", heal increase by \(character.weapon.heal - oldWeapon.heal) points !")
+            } else {
+                print(character.name + " found a chest, he replace his " + oldWeapon.name + " by a " + character.weapon.name + ", damage increase by \(character.weapon.damage - oldWeapon.damage) points !")
             }
         }
     }

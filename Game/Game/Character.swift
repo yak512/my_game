@@ -12,12 +12,17 @@ import Foundation
 class Character {
     
     var name: String
-    var canAttack = false
+    var canAttack: Bool = false
+    var canHeal: Bool = false
     var lifePoint: Int
-    var IsAlive = true
-    var chest = false
-    var weapon: Weapon
     var maxLife: Int
+    var chest = false
+    
+    var weapon: Weapon {
+        didSet {
+            chest = true
+        }
+    }
     
     init (name: String, lifePoint: Int, maxLife: Int, weapon: Weapon) {
         self.name = name
@@ -34,31 +39,39 @@ class Character {
         print("[Life point: \(lifePoint)" , terminator:"")
     }
     
-    func displaymaxLife() {
-        print("/\(maxLife) | " , terminator:"")
+    func displayMaxLife() {
+        print("/\(maxLife) ❤️ | " , terminator:"")
+    }
+    
+    func displayWeapon() {
+        print(" Weapon: \(weapon.name) | ", terminator:"" )
     }
     
     func displayAttack() {
-        print("Dammage points: \(weapon.damage) | " , terminator:"")
+        print("Damage points: \(weapon.damage) | " , terminator:"")
     }
     
     func displayTypeClass() {
         if self is Warrior {
-            print("Class: (Warrior)]")
+            print("Class: (Warrior)] 🗡")
         } else if self is Mage {
-            print("Class: (Mage)]")
+            print("Class: (Mage)] 🌿")
         } else if self is Coloss {
-            print("Class: (Coloss)]")
+            print("Class: (Coloss)]🛡")
         } else if self is Dwarf {
-            print("Class: (Dwarf)]")
+            print("Class: (Dwarf)] ⚔️")
         } else {
-            print("Class: (Paladin)]")
+            print("Class: (Paladin)] 📿🗡")
         }
         
     }
     
+    func doActionOn(character: Character, isFriend: Bool) {
+        self.chararacterToAttack(character: character)
+    }
+    
     func chararacterToAttack(character: Character) {
-        if character.IsAlive == false {
+        if character.lifePoint == 0 {
             print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
         } else {
             let oldValue = character.lifePoint
@@ -66,17 +79,33 @@ class Character {
             print("\n\n\n--->" + self.name + " attacked with \(weapon.damage) points, " + character.name + " lost \(weapon.damage) on \(oldValue) life points!<---\n")
             if character.lifePoint <= 0 {
                 character.lifePoint = 0
-                character.IsAlive = false
-                print("--->" + character.name + " is dead..<--\n")
+                print("--->" + character.name + " is dead.. ☠︎ <--\n")
+            }
+        }
+    }
+    
+    func characterToHeal(character: Character) {
+        if (character.lifePoint == character.maxLife) {
+            print("\n\n\n--->This character is full life !<---\n")
+        } else if (character.lifePoint != character.maxLife) {
+            let oldValue = character.lifePoint
+            character.lifePoint = character.lifePoint + weapon.heal
+            if (character.lifePoint > character.maxLife) {
+                print("\n\n\n--->" + character.name + " received \(character.maxLife - oldValue) heal points on \(character.maxLife) life points !<---\n")
+            } else {
+                print("\n\n\n--->" + character.name + " received \(weapon.heal) heal points on \(character.maxLife) life points !<---\n")
+            }
+            if (character.lifePoint > character.maxLife) {
+                character.lifePoint = character.maxLife
             }
         }
     }
     
     func correctCharacter() -> Bool {
-        if IsAlive == false {
+        if lifePoint == 0 {
             print("\n\n\n--->This Character is dead, please choose another one<---\n")
             return false
-        } 
+        }
         return true
     }
 }

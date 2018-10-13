@@ -1,5 +1,5 @@
 //
-//  Destructive axe.swift
+//  Destructive_axe.swift
 //  Game
 //
 //  Created by BOUHADEB Yacoub on 06/10/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Destructiveaxe : Weapon {
+class DestructiveAxe : Weapon {
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }

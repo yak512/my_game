@@ -12,7 +12,7 @@ import Foundation
 class Player {
     var playerName = ""
     var heroes = [Character]()
-
+    
     func createChararacters() {
         while (heroes.count != 3) {
             print("\nWhich class do you choose?"
@@ -27,7 +27,7 @@ class Player {
             }
         }
     }
-
+    
     var allNames = [String]()
     func isPlayerAlive() -> Int {
         var lifeheroes = 0
@@ -48,7 +48,8 @@ class Player {
             if (hero is Mage || hero is Paladin) {
                 hero.displayName()
                 hero.displayLifePoint()
-                hero.displaymaxLife()
+                hero.displayMaxLife()
+                hero.displayWeapon()
                 if (hero is Mage) {
                     (hero as! Mage).displayHealpoint()
                 } else {
@@ -60,7 +61,8 @@ class Player {
             else {
                 hero.displayName()
                 hero.displayLifePoint()
-                hero.displaymaxLife()
+                hero.displayMaxLife()
+                hero.displayWeapon()
                 hero.displayAttack()
                 hero.displayTypeClass()
             }

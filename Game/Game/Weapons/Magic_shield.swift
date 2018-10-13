@@ -1,5 +1,5 @@
 //
-//  Magic shield.swift
+//  Magic_shield.swift
 //  Game
 //
 //  Created by BOUHADEB Yacoub on 06/10/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Magicshield : Weapon {
+class MagicShield : Weapon {
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }

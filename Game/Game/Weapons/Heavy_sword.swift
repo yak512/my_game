@@ -1,5 +1,5 @@
 //
-//  Magic stick.swift
+//  Heavy sword.swift
 //  Game
 //
 //  Created by BOUHADEB Yacoub on 06/10/2018.
@@ -8,12 +8,12 @@
 
 import Foundation
 
-class Magicstick : Weapon {
+class HeavySword : Weapon {
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }
     convenience init() {
-        self.init(name: "Magic stick" , damage: 0, heal: 25)
+        self.init(name: "Heavy sword" , damage: 15, heal: 0)
     }
 }
 
