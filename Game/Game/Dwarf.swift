@@ -16,7 +16,7 @@ class Dwarf: Character {
     }
     
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 75, maxLife: 75, weapon: Weapon(name: "Sharp axe", damage: 15, heal: 0))
+        self.init(name: name, lifePoint: 75, maxLife: 75, weapon: Weapon(name: "Sharp axe", damage: 20, heal: 0))
         canAttack = true
         canHeal = false
     }

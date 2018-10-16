@@ -7,13 +7,14 @@
 //
 
 import Foundation
-
+// Weapon for Warrior
 class DestructiveAxe : Weapon {
+    
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }
     convenience init() {
-        self.init(name: "Destructive axe" , damage: 25, heal: 0)
+        self.init(name: "Destructive axe" , damage: 30, heal: 0)
     }
 }
 

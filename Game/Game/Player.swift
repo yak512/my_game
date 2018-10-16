@@ -10,10 +10,13 @@ import Foundation
 
 // This class creat the object player this class allow us to have Character for players, name of characters and other prorities
 class Player {
+    
     var playerName = ""
     var heroes = [Character]()
+    var allNames = [String]()
     
     func createChararacters() {
+        
         while (heroes.count != 3) {
             print("\nWhich class do you choose?"
                 + "\n1. warrior [Life points: 100 | Damages: 10 points]"
@@ -28,8 +31,9 @@ class Player {
         }
     }
     
-    var allNames = [String]()
+    
     func isPlayerAlive() -> Int {
+        
         var lifeheroes = 0
         for hero in heroes {
             lifeheroes += hero.lifePoint
@@ -42,6 +46,7 @@ class Player {
     }
     
     func displayCharacters() {
+        
         var numberHero = 0
         for hero in heroes {
             print("\(numberHero + 1)) ", terminator:"")

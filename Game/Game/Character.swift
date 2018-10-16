@@ -52,6 +52,7 @@ class Character {
     }
     
     func displayTypeClass() {
+        
         if self is Warrior {
             print("Class: (Warrior)] 🗡")
         } else if self is Mage {
@@ -66,11 +67,14 @@ class Character {
         
     }
     
+    // This function is used by all the hereos (Warrior, Mage, Coloss, Dwarf and Paladin) to do an action
     func doActionOn(character: Character, isFriend: Bool) {
         self.chararacterToAttack(character: character)
     }
     
+    // This function is used by the Warrior, Coloss, Dwarf and Paladin to attack an ennemy character
     func chararacterToAttack(character: Character) {
+        
         if character.lifePoint == 0 {
             print("\n\n\n--->This ennemi character is dead, please choose another one<---\n")
         } else {
@@ -84,7 +88,9 @@ class Character {
         }
     }
     
+    // This function is used by the Mage and Paladin to heal an ally character
     func characterToHeal(character: Character) {
+        
         if (character.lifePoint == character.maxLife) {
             print("\n\n\n--->This character is full life !<---\n")
         } else if (character.lifePoint != character.maxLife) {
@@ -101,7 +107,9 @@ class Character {
         }
     }
     
+    // This function verify is a correct character is choosed
     func correctCharacter() -> Bool {
+        
         if lifePoint == 0 {
             print("\n\n\n--->This Character is dead, please choose another one<---\n")
             return false

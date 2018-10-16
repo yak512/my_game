@@ -10,6 +10,7 @@ import Foundation
 
 // The class Weapons allow use to creat the object Weapon for our characters
 class Weapon {
+    
     var name: String
     var damage: Int
     var heal: Int

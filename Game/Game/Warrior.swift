@@ -16,7 +16,7 @@ class Warrior: Character {
     }
     
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sword of fury", damage: 10, heal: 0))
+        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sword of fury", damage: 15, heal: 0))
         canAttack = true
         canHeal = false
     }

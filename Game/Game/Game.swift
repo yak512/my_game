@@ -9,6 +9,7 @@
 import Foundation
 
 extension String {
+    
     func containsOnlyLetters() -> Bool {
         for chr in self {
             if !(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") {
@@ -21,7 +22,9 @@ extension String {
 
 //Class Game where we we have our players, porperties and methode for the game
 class Game  {
+    
     var players = [Player]()
+    
     private var playerNames: [String] {
         var names = [String]()
         for player in players {
@@ -29,6 +32,7 @@ class Game  {
         }
         return names
     }
+    
     var namesOfCharacters: [String] {
         var names = [String]()
         for player in players {
@@ -38,12 +42,14 @@ class Game  {
         }
         return names
     }
+    
     var numberRound = 0
     private var gameOver = false
     var playerOneOrTwo = 0
     
     // This function verify is a name is already use and call the function containsLetters() to verify if the character string is correct
     private func checkName(name: String, allNames: [String]) -> Bool {
+        
         if allNames.contains(name) {
             print("This name is already used ! Choose another one.")
             return false
@@ -57,6 +63,7 @@ class Game  {
     
     // This function tell you to choose a name and it return a correct name, a unique name
     func chooseName(allNames: [String]) -> String {
+        
         var correctName: String = ""
         print("Choose a name")
         while (correctName.isEmpty) {
@@ -69,7 +76,9 @@ class Game  {
         return correctName
     }
     
+    // This function let us choose a specific type of character (Warrior, Mage, Coloss, Dwarf, Paladin)
     func chooseTypeCharacter() -> Character? {
+        
         if let choice = readLine()  {
             switch choice {
             case "1", "warrior":
@@ -88,7 +97,10 @@ class Game  {
         }
         return nil
     }
+    
+    // This fucntion let us choose between attack or heal, when a player choose Paladin (ally character)
     private func chooseHealOrAttack() -> Bool {
+        
         print("Do you wanto heal or Attack ?\n 1 heal \n 2 attack")
         var healOrAttack: Bool?
         
@@ -117,6 +129,7 @@ class Game  {
         print("\n")
     }
     
+    // This function let us choose an ally character to do an action
     private func chooseCharacter() ->([Character], [Character], Character) {
         
         print("[\(players[playerOneOrTwo].playerName)]" + " which character do you choose ? Choose between 1 and 3")
@@ -127,7 +140,7 @@ class Game  {
         return (currentPlayerHeroes, playerDontPlayHeores, currentPlayerCharacter)
     }
     
-    // In this function  the character choose a character to do an action
+    // In this function the game take place and the two player can choose their character and do an action
     private func fight() {
         
         gameStartTimer()
@@ -166,6 +179,7 @@ class Game  {
         }
     }
     
+    // this function let us choose and ennemy character to attack or an ally chaarcter to heal
     private func choosenCharacterForAction(_ playerHeroes: [Character]) -> Character {
         while (true) {
             if let choice = readLine() {
@@ -190,7 +204,7 @@ class Game  {
     }
     
     
-    // This function verify is a player is alive, so it can tell if the game is over our not
+    // This function verify is a player is alive, so it can tell if the game is over or not
     private func isGameOver() {
         
         for i in 0..<2 {
@@ -222,7 +236,7 @@ class Game  {
     
     // This function creat a new object for one character the object weapon, every characters have a chance to find a chest
     private func chest(character: Character) {
-        let randomNbr =  Int(arc4random_uniform(2))
+        let randomNbr =  Int(arc4random_uniform(10))
         
         let oldWeapon = character.weapon
         var paladinShieldOrSword = false
@@ -239,11 +253,9 @@ class Game  {
                 let nb = Int(arc4random_uniform(2))
                 if  nb == 1 {
                     character.weapon = MagicShield()
-                    print(character.name + " found a chest, he replace his " + oldWeapon.name + " by a " + character.weapon.name + ", heal increase by 10 points !")
                     paladinShieldOrSword = true
                 } else {
                     character.weapon = MagicSword()
-                    // print(character.name + " found a chest, he replace his " + character.weapon.name + " by a " + newWeapon.name + ", damage increase by 10 points !")
                 }
             }
             if character is Mage || (character is Paladin && paladinShieldOrSword == true) {

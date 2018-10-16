@@ -16,7 +16,7 @@ class Coloss: Character {
     }
     
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 150, maxLife: 150, weapon: Weapon(name: "Protective shield", damage: 7, heal: 0))
+        self.init(name: name, lifePoint: 150, maxLife: 150, weapon: Weapon(name: "Protective shield", damage: 10, heal: 0))
         canAttack = true
         canHeal = false
     }

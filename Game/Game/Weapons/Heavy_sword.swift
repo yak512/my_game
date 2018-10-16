@@ -7,13 +7,14 @@
 //
 
 import Foundation
-
+// Weapon for Coloss
 class HeavySword : Weapon {
+    
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }
     convenience init() {
-        self.init(name: "Heavy sword" , damage: 15, heal: 0)
+        self.init(name: "Heavy sword" , damage: 20, heal: 0)
     }
 }
 

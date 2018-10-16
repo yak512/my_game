@@ -16,7 +16,7 @@ class Paladin: Character {
     }
     
     convenience init(name: String) {
-        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sharp sword", damage: 10, heal: 15))
+        self.init(name: name, lifePoint: 100, maxLife: 100, weapon: Weapon(name: "Sharp sword", damage: 15, heal: 10))
         canAttack = true
         canHeal = true
     }

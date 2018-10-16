@@ -7,13 +7,14 @@
 //
 
 import Foundation
-
+// Weapon for Paladin
 class MagicSword : Weapon {
+    
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }
     convenience init() {
-        self.init(name: "magic sword" , damage: 20, heal: 15)
+        self.init(name: "magic sword" , damage: 25, heal: 15)
     }
 }
 

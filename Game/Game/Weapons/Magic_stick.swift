@@ -7,8 +7,9 @@
 //
 
 import Foundation
-
+// Weapon for Mage
 class MagicStick : Weapon {
+    
     override init (name: String, damage: Int, heal: Int) {
         super.init(name: name, damage: damage, heal: heal)
     }
