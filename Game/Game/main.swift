@@ -9,5 +9,7 @@
 import Foundation
 
 // Creation of the object Game
-let game =  Game()
+let game = Game()
 game.start()
+
+

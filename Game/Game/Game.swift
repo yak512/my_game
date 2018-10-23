@@ -23,9 +23,9 @@ extension String {
 //Class Game where we we have our players, porperties and methode for the game
 class Game  {
     
-    var players = [Player]()
+    var players = [Player]() // Table of object player, we stock all the player
     
-    private var playerNames: [String] {
+    private var playerNames: [String] { // We stock the players names
         var names = [String]()
         for player in players {
             names.append(player.playerName)
@@ -33,7 +33,7 @@ class Game  {
         return names
     }
     
-    var namesOfCharacters: [String] {
+    var namesOfCharacters: [String] { // We stock all the names of the characters
         var names = [String]()
         for player in players {
             for hero in player.heroes {
@@ -43,9 +43,18 @@ class Game  {
         return names
     }
     
-    var numberRound = 0
-    private var gameOver = false
-    var playerOneOrTwo = 0
+    private var numberRounds = 0  // Used to count the number of round played
+    
+    private var gameOver = false // Used to know if the game is over or not
+    
+    private var playerOneOrTwo = 0 // Index used in the function changePlayer(), so we can change between player one and two
+    
+    
+    
+    ////////                        ///////
+    ///////        METHODS          ///////
+    ///////                         ///////
+    
     
     // This function verify is a name is already use and call the function containsLetters() to verify if the character string is correct
     private func checkName(name: String, allNames: [String]) -> Bool {
@@ -119,10 +128,37 @@ class Game  {
         return healOrAttack!
     }
     
+    // This function let us choose between playing again or not
+    private func playAgain() {
+        
+        var playAgain: Bool?
+        print("Do you want to play again, yes or no ?")
+        while (playAgain == nil) {
+            if let choose = readLine() {
+                switch choose {
+                case "y", "yes":
+                    players.removeAll()
+                    numberRounds = 0
+                    playerOneOrTwo = 0
+                    playAgain = true
+                    gameOver = false
+                    start()
+                case "n", "no":
+                    playAgain = false
+                    print("Thank you for playing, see you soon ! :D")
+                default:
+                    print("Please tape y or yes to play again, n or no to stop")
+                }
+            }
+        }
+    }
+    
+    // This function is only a countdown before the game start
     private func gameStartTimer() {
-        print("GAME begins in 3 seconds BE READY !!")
+        
+        print("\n\nGAME begins in 3 seconds BE READY !!")
         sleep(1)
-        for i in 0..<3 {
+        for i in (0..<3).reversed() {
             print(i + 1)
             sleep(1)
         }
@@ -148,32 +184,31 @@ class Game  {
         while (gameOver != true) {
             displayPlayers()
             
-            numberRound += 1
+            numberRounds += 1
             
             let (currentPlayerHeroes, playerDontPlayHeores, currentPlayerCharacter) = chooseCharacter()
             
             chest(character: currentPlayerCharacter)
             
-            if currentPlayerCharacter.canHeal && !currentPlayerCharacter.canAttack {
-                print("Which character do you want to heal ?")
-                let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                currentPlayerCharacter.doActionOn(character: characterToHeal, isFriend: true)
-                
-            } else if !currentPlayerCharacter.canHeal && currentPlayerCharacter.canAttack {
+            var isAttack: Bool = true
+            if currentPlayerCharacter.canHeal {
+                if currentPlayerCharacter.canAttack && !chooseHealOrAttack() {
+                    isAttack = true
+                } else {
+                    isAttack = false
+                }
+            }
+            
+            if isAttack {
                 print("Which character do you want to attack ?")
                 let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
                 currentPlayerCharacter.doActionOn(character: characterToAttack, isFriend: false)
             } else {
-                if chooseHealOrAttack() {
-                    print("Which character do you want to heal ?")
-                    let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
-                    currentPlayerCharacter.doActionOn(character: characterToHeal, isFriend: true)
-                } else {
-                    print("Which character do you want to attack ?")
-                    let characterToAttack = choosenCharacterForAction(playerDontPlayHeores)
-                    currentPlayerCharacter.doActionOn(character: characterToAttack, isFriend: false)
-                }
+                print("Which character do you want to heal ?")
+                let characterToHeal = choosenCharacterForAction(currentPlayerHeroes)
+                currentPlayerCharacter.doActionOn(character: characterToHeal, isFriend: true)
             }
+            
             changePlayer()
             isGameOver()
         }
@@ -203,26 +238,31 @@ class Game  {
         }
     }
     
-    
     // This function verify is a player is alive, so it can tell if the game is over or not
     private func isGameOver() {
         
         for i in 0..<2 {
             if  players[i].isPlayerAlive() == 1 {
+                displayPlayers()
                 print("[" + players[i].playerName + "]" + ", all of your characters are dead..")
-                print("[" + players[i == 0 ? 1 : 0].playerName + "]" + " Win this game congratulations !")
-                print("Number of round played: \(numberRound)")
+                print("[" + players[i == 0 ? 1 : 0].playerName + "]" + " win this game congratulations !")
+                print("Number of round played: \(numberRounds)")
                 gameOver = true
             }
         }
-        if (gameOver) {
-            print("Thank you for playing, see you soon ! :D")
+        if gameOver {
+            playAgain()
         }
     }
     
     // This function tell us which player should play
     func changePlayer() {
         playerOneOrTwo = playerOneOrTwo == 0 ? 1 : 0
+    }
+    
+    // This function is used to explain the game
+    func rules() {
+        print("\n\n---->Each player is going to enter his name and choose 3 characters and their names, you have the choice between 5 different characters, choose wisely, the player who kills all the characters of his enemy wins the game ! Good luck !<----")
     }
     
     // This function displayer all the characters of the players
@@ -279,7 +319,7 @@ class Game  {
     
     // This function start the game
     func start() {
-        print("Each player is going to enter his name and choose 3 characters and the game will start !")
+        rules()
         creatTeams()
         fight()
     }
